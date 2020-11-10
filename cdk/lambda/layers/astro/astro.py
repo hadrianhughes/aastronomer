@@ -54,7 +54,7 @@ def get_all_objects(earthPos, time):
     alt_azs = []
     for obj in celestial_objects:
         aa = get_object(obj, earthPos, time)
-        alt_azs.append({ 'object': obj, 'alt': aa['alt'], 'az': aa['az'] })
+        alt_azs.append({ **aa, 'object': obj })
 
     return alt_azs
 
