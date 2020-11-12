@@ -1,6 +1,7 @@
 import * as path from 'path'
 import * as cdk from '@aws-cdk/core'
 import * as apig from '@aws-cdk/aws-apigatewayv2'
+import { LambdaProxyIntegration } from '@aws-cdk/aws-apigatewayv2-integrations'
 import { PYTHON_RUNTIME } from './globals'
 import * as lambda from '@aws-cdk/aws-lambda-python'
 
@@ -26,7 +27,7 @@ export class PlanetsAPI extends cdk.Construct {
       layers: [astroLayer]
     })
 
-    const getVisibleIntegration = new apig.LambdaProxyIntegration({
+    const getVisibleIntegration = new LambdaProxyIntegration({
       handler: getVisibleLambda
     })
 
