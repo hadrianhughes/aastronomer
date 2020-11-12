@@ -56,3 +56,33 @@ def get_all_objects(earthPos, time):
         alt_azs.append({ **aa, 'object': obj })
 
     return alt_azs
+
+
+def direction_from_azimuth(az):
+    """Get the compass direction from an azimuth value in degrees
+
+    :param az: Azimuth to convert in degrees
+    :type az:  float
+
+    :return: string
+    """
+    if az > 360 or az < 0:
+        return None
+    elif az >= 337.5 or az <= 22.5:
+        return 'N'
+    elif 22.5 < az < 67.5:
+        return 'NE'
+    elif 67.5 <= az <= 112.5:
+        return 'E'
+    elif 112.5 < az < 157.5:
+        return 'SE'
+    elif 157.5 <= az <= 202.5:
+        return 'S'
+    elif 202.5 < az < 247.5:
+        return 'SW'
+    elif 247.5 <= az <= 292.5:
+        return 'W'
+    elif 292.5 < az < 337.5:
+        return 'NW'
+    else:
+        return None
