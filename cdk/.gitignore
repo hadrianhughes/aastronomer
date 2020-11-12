@@ -10,5 +10,10 @@ cdk.out
 # Parcel default cache directory
 .parcel-cache
 
-**/*.pyc
+# Vim buffers
 **/*.swp
+
+# Python stuff
+**/*.pyc
+**/.pytest_cache/
+**/__pycache__/
