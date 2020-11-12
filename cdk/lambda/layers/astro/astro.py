@@ -13,7 +13,7 @@ celestial_objects = [
 ]
 
 
-def get_object(objectName, earthPos, time):
+def get_object(objectName: str, earthPos: (float, float), time: str):
     """Get the altitude and azimuth of an object at a given time and location
 
     :param objectName: Name of the target object
@@ -38,7 +38,7 @@ def get_object(objectName, earthPos, time):
     return { 'alt': object_alt_az.alt.deg, 'az': object_alt_az.az.deg }
 
 
-def get_all_objects(earthPos, time):
+def get_all_objects(earthPos: (float, float), time: str):
     """Get the result of get_object for all available celestial objects
 
     :param earthPos: Latitude and Longitude of the observation location
@@ -58,7 +58,7 @@ def get_all_objects(earthPos, time):
     return alt_azs
 
 
-def direction_from_azimuth(az):
+def direction_from_azimuth(az: float):
     """Get the compass direction from an azimuth value in degrees
 
     :param az: Azimuth to convert in degrees
