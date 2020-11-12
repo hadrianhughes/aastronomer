@@ -5,7 +5,6 @@ from astropy.time import Time
 celestial_objects = [
     'mercury',
     'venus',
-    'earth',
     'mars',
     'jupiter',
     'saturn',
@@ -48,7 +47,7 @@ def get_all_objects(earthPos, time):
     :type time:      string
 
     :return: A list of dicts containing the name, altitude and azimuth of each object
-    :rtpe:   list({ 'object': string, 'alt': float, 'az': float })
+    :rtype:   list({ 'object': string, 'alt': float, 'az': float })
     """
 
     alt_azs = []
@@ -57,5 +56,3 @@ def get_all_objects(earthPos, time):
         alt_azs.append({ **aa, 'object': obj })
 
     return alt_azs
-
-print(get_all_objects((55.9533, 3.1883), '2020-11-9 21:50:00'))
