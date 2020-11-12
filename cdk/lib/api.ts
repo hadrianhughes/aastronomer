@@ -21,7 +21,7 @@ export class PlanetsAPI extends cdk.Construct {
     // Create Lambda functions
     const getVisibleLambda = new lambda.PythonFunction(this, 'GetVisibleFunction', {
       runtime: PYTHON_RUNTIME,
-      entry: path.join(__dirname, '..', 'lambda', 'handlers', 'getVisible', 'app.py'),
+      entry: path.join(__dirname, '..', 'lambda', 'handlers', 'getVisible'),
       handler: 'get_visible_handler',
       layers: [astroLayer]
     })
