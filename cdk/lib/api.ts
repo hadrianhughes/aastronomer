@@ -1,5 +1,6 @@
 import * as path from 'path'
 import * as cdk from '@aws-cdk/core'
+import { Duration } from '@aws-cdk/core'
 import * as apig from '@aws-cdk/aws-apigatewayv2'
 import { LambdaProxyIntegration } from '@aws-cdk/aws-apigatewayv2-integrations'
 import { PYTHON_RUNTIME } from './globals'
@@ -24,7 +25,8 @@ export class PlanetsAPI extends cdk.Construct {
       runtime: PYTHON_RUNTIME,
       entry: path.join(__dirname, '..', 'lambda', 'handlers', 'getVisible'),
       handler: 'get_visible_handler',
-      layers: [astroLayer]
+      layers: [astroLayer],
+      memorySize: 1600
     })
 
     const getVisibleIntegration = new LambdaProxyIntegration({
@@ -38,7 +40,7 @@ export class PlanetsAPI extends cdk.Construct {
     })
 
     this.api.addRoutes({
-      path: '/visible',
+      path: '/visible/{latitude}/{longitude}',
       methods: [apig.HttpMethod.GET],
       integration: getVisibleIntegration
     })
