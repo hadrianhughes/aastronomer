@@ -1,4 +1,5 @@
 import math
+import json
 from datetime import datetime
 from astro import get_all_objects
 
@@ -18,5 +19,5 @@ def get_visible_handler(event: dict, context: dict):
         'headers': {
             'Content-Type': 'application/json'
         },
-        'body': str(results)
+        'body': json.dumps(results)
     }
