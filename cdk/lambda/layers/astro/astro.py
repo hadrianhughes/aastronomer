@@ -49,10 +49,8 @@ def get_all_objects(earthPos: (float, float), time: str):
     :return: A dict of each object with its altitude and azimuth
     :rtype:  { ...{ object: { 'alt': float, 'az': float } } }
     """
-    alt_azs = {}
-    for obj in celestial_objects:
-        aa = get_object(obj, earthPos, time)
-        alt_azs[obj] = aa
+    alt_azs = { obj: get_object(obj, earthPos, time)
+                for obj in celestial_objects }
 
     return alt_azs
 
