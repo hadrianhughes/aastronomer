@@ -26,7 +26,8 @@ export class PlanetsAPI extends cdk.Construct {
       entry: path.join(__dirname, '..', 'lambda', 'handlers', 'getVisible'),
       handler: 'get_visible_handler',
       layers: [astroLayer],
-      memorySize: 1600
+      timeout: Duration.seconds(5),
+      memorySize: 2048
     })
 
     const getVisibleIntegration = new LambdaProxyIntegration({
