@@ -1,7 +1,7 @@
 import math
 import json
 from datetime import datetime
-from astro import get_all_objects
+from astro import get_all_objects, direction_from_azimuth
 
 def get_visible_handler(event: dict, context: dict):
     params = event['pathParameters']
@@ -14,7 +14,7 @@ def get_visible_handler(event: dict, context: dict):
 
     results = get_all_objects(lat_long, date_string)
 
-    visible_results = { obj: pos
+    visible_results = { obj: { **pos, 'ordinal': direction_from_azimuth(pos['az']) }
                         for (obj, pos) in results.items()
                         if results[obj]['alt'] > 0 }
 
