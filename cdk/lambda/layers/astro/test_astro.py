@@ -23,14 +23,10 @@ def test_get_object():
 
 def test_get_all_objects():
     result = get_all_objects(greenwich_lat_long, datetime_2000)
-    expected_dict = { objName: position
-                      for (objName, position)
-                      in expected_greenwich_2000 }
 
-    for item in result:
-        expected_item = expected_dict[item['object']]
-        assert math.modf(item['alt'])[1] == expected_item['alt']
-        assert math.modf(item['az'])[1] == expected_item['az']
+    for (objName, position) in expected_greenwich_2000:
+        assert math.modf(result[objName]['alt'])[1] == position['alt']
+        assert math.modf(result[objName]['az'])[1] == position['az']
 
 
 def test_direction_from_azimuth_invalid():
