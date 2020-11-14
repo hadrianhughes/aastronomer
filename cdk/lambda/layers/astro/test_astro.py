@@ -1,5 +1,5 @@
 import math
-from astro.astro import get_object, get_all_objects, direction_from_azimuth
+from astro import get_object, get_all_objects, direction_from_azimuth
 
 expected_greenwich_2000 = [
     ('mercury', { 'alt': -62, 'az': 17 }),

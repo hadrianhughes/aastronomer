@@ -14,10 +14,14 @@ def get_visible_handler(event: dict, context: dict):
 
     results = get_all_objects(lat_long, date_string)
 
+    visible_results = { obj: pos
+                        for (obj, pos) in results.items()
+                        if results[obj]['alt'] > 0 }
+
     return {
         'statusCode': 200,
         'headers': {
             'Content-Type': 'application/json'
         },
-        'body': json.dumps(results)
+        'body': json.dumps(visible_results)
     }
