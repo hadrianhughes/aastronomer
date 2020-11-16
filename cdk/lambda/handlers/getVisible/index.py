@@ -2,7 +2,7 @@ import math
 import json
 from datetime import datetime
 from astro import get_all_objects, direction_from_azimuth
-
+from common import make_response
 
 def get_visible(latitude: float, longitude: float):
     lat_long = (math.modf(latitude)[1], math.modf(longitude)[1])
@@ -24,31 +24,13 @@ def handler(event: dict, context: dict):
     longitude = float(params['longitude'])
 
     if latitude < -90 or latitude > 90:
-        return {
-            'statusCode': 400,
-            'headers': {
-                'Content-Type': 'application/json'
-            },
-            'body': json.dumps({ 'message': 'Latitude must be between -90 and 90 degrees' })
-        }
+        return make_response(400, { 'message': 'Latitude must be between -90 and 90 degrees' })
 
 
     if longitude < -180 or longitude > 180:
-        return {
-            'statusCode': 400,
-            'headers': {
-                'Content-Type': 'application/json'
-            },
-            'body': json.dumps({ 'message': 'Longitude must be between -180 and 180 degrees' })
-        }
+        return make_response(400, { 'message': 'Longitude must be between -180 and 180 degrees' })
 
 
     visible_results = get_visible(latitude, longitude)
 
-    return {
-        'statusCode': 200,
-        'headers': {
-            'Content-Type': 'application/json'
-        },
-        'body': json.dumps(visible_results)
-    }
+    return make_response(200, visible_results)
