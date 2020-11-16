@@ -19,13 +19,19 @@ export class PlanetsAPI extends cdk.Construct {
       description: 'A Python layer containing the core logic for the API'
     })
 
+    const commonLayer = new lambda.PythonLayerVersion(this, 'CommonLayer', {
+      entry: path.join(__dirname, '..', 'lambda', 'layers', 'common'),
+      compatibleRuntimes: [PYTHON_RUNTIME],
+      description: 'A Python layer containing utility functions to be used across the project'
+    })
+
 
     // Create Lambda functions
     const getVisibleLambda = new lambda.PythonFunction(this, 'GetVisibleFunction', {
       runtime: PYTHON_RUNTIME,
       entry: path.join(__dirname, '..', 'lambda', 'handlers', 'getVisible'),
       handler: 'handler',
-      layers: [astroLayer],
+      layers: [astroLayer, commonLayer],
       timeout: Duration.seconds(5),
       memorySize: 2048
     })
