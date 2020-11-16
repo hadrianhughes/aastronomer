@@ -1,1 +1,1 @@
-from common.make_response import make_response
+from common.common import make_response
