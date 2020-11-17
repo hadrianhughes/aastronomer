@@ -25,10 +25,8 @@ def handler(event: dict, context: dict):
     if latitude < -90 or latitude > 90:
         return make_response(400, { 'message': 'Latitude must be between -90 and 90 degrees' })
 
-
     if longitude < -180 or longitude > 180:
         return make_response(400, { 'message': 'Longitude must be between -180 and 180 degrees' })
-
 
     visible_results = get_visible(latitude, longitude)
 
