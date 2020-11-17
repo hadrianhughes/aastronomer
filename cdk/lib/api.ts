@@ -43,7 +43,8 @@ export class PlanetsAPI extends cdk.Construct {
 
     // Create API
     this.api = new apig.HttpApi(this, 'HttpAPI', {
-      apiName: 'planets-api'
+      apiName: 'planets-api',
+      createDefaultStage: true
     })
 
     this.api.addRoutes({
