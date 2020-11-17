@@ -33,8 +33,8 @@ def handler(event: dict, context: dict):
     visible_results = get_visible(latitude, longitude)
 
     response_body = {
-        'latitude': latitude,
-        'longitude': longitude,
+        'latitude': int(latitude),
+        'longitude': int(longitude),
         'visible': visible_results
     }
 
