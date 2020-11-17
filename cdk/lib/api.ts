@@ -32,7 +32,7 @@ export class PlanetsAPI extends cdk.Construct {
       entry: path.join(__dirname, '..', 'lambda', 'handlers', 'getVisible'),
       handler: 'handler',
       layers: [astroLayer, commonLayer],
-      timeout: Duration.seconds(5),
+      timeout: Duration.seconds(10),
       memorySize: 2048
     })
 
