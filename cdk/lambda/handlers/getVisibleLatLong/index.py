@@ -3,7 +3,7 @@ from datetime import datetime
 from astro import get_all_objects, direction_from_azimuth
 from common import make_response
 
-def get_visible(latitude: float, longitude: float):
+def get_visible_lat_long(latitude: float, longitude: float):
     lat_long = (int(latitude), int(longitude))
     date_string = datetime.now(tz=None).strftime('%Y-%m-%d %H:%M')
 
@@ -28,7 +28,7 @@ def handler(event: dict, context: dict):
     if longitude < -180 or longitude > 180:
         return make_response(400, { 'message': 'Longitude must be between -180 and 180 degrees' })
 
-    visible_results = get_visible(latitude, longitude)
+    visible_results = get_visible_lat_long(latitude, longitude)
 
     response_body = {
         'latitude': int(latitude),

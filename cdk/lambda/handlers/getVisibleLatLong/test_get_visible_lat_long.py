@@ -1,5 +1,5 @@
 import json
-from getVisible.index import handler
+from getVisibleLatLong.index import handler
 
 def make_request(lat, long):
     return {
