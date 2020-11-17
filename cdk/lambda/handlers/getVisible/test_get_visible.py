@@ -9,14 +9,21 @@ def make_request(lat, long):
         }
     }
 
+
 def test_response():
-    response = handler(make_request(50, 1), {})
+    lat = 50
+    long = 1
+
+    response = handler(make_request(lat, long), {})
     response_body = json.loads(response['body'])
 
     assert response['statusCode'] == 200
     assert response['headers']['Content-Type'] == 'application/json'
 
-    for (k, v) in response_body.items():
+    assert response_body['latitude'] == lat
+    assert response_body['longitude'] == long
+
+    for (k, v) in response_body['visible'].items():
         assert v['alt'] > 0
 
 

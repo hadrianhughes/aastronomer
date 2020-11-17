@@ -33,4 +33,10 @@ def handler(event: dict, context: dict):
 
     visible_results = get_visible(latitude, longitude)
 
-    return make_response(200, visible_results)
+    response_body = {
+        'latitude': latitude,
+        'longitude': longitude,
+        'visible': visible_results
+    }
+
+    return make_response(200, response_body)
