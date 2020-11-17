@@ -1,11 +1,10 @@
-import math
 import json
 from datetime import datetime
 from astro import get_all_objects, direction_from_azimuth
 from common import make_response
 
 def get_visible(latitude: float, longitude: float):
-    lat_long = (math.modf(latitude)[1], math.modf(longitude)[1])
+    lat_long = (int(latitude), int(longitude))
     date_string = datetime.now(tz=None).strftime('%Y-%m-%d %H:%M')
 
     results = get_all_objects(lat_long, date_string)

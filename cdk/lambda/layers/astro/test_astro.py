@@ -1,4 +1,3 @@
-import math
 from astro import get_object, get_all_objects, direction_from_azimuth
 
 expected_greenwich_2000 = [
@@ -17,16 +16,16 @@ datetime_2000 = '2000-01-01 00:00'
 def test_get_object():
     for (objName, position) in expected_greenwich_2000:
         result = get_object(objName, greenwich_lat_long, datetime_2000)
-        assert math.modf(result['alt'])[1] == position['alt']
-        assert math.modf(result['az'])[1] == position['az']
+        assert int(result['alt']) == position['alt']
+        assert int(result['az']) == position['az']
 
 
 def test_get_all_objects():
     result = get_all_objects(greenwich_lat_long, datetime_2000)
 
     for (objName, position) in expected_greenwich_2000:
-        assert math.modf(result[objName]['alt'])[1] == position['alt']
-        assert math.modf(result[objName]['az'])[1] == position['az']
+        assert int(result[objName]['alt']) == position['alt']
+        assert int(result[objName]['az']) == position['az']
 
 
 def test_direction_from_azimuth_invalid():
