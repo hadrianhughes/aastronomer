@@ -22,6 +22,10 @@ export class PlanetsAPI extends cdk.Construct {
       handler: props.lambdaLibrary.functions.getVisibleLatLong!
     })
 
+    const getVisibleByIDIntegration = new LambdaProxyIntegration({
+      handler: props.lambdaLibrary.functions.getVisibleByID!
+    })
+
     // Create API
     this.api = new apig.HttpApi(this, 'HttpAPI', {
       apiName: 'planets-api',
@@ -32,6 +36,12 @@ export class PlanetsAPI extends cdk.Construct {
       path: '/visible-lat-long/{latitude}/{longitude}',
       methods: [apig.HttpMethod.GET],
       integration: getVisibleLatLongIntegration
+    })
+
+    this.api.addRoutes({
+      path: '/visible/{locationID}',
+      methods: [apig.HttpMethod.GET],
+      integration: getVisibleByIDIntegration
     })
   }
 }

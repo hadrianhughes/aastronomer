@@ -26,6 +26,12 @@ export class PlanetsLambdaLibrary extends cdk.Construct {
         memorySize: 2048
       }
     )
+
+    this.functions.getVisibleByID = this.makeFunction(
+      'GetVisibleByID',
+      'getVisibleByID',
+      [this.layers.common]
+    )
   }
 
   private makeLayer(name: string, description: string, dir: string): lambda.PythonLayerVersion {
