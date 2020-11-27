@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 from common import make_response
 from astro import get_all_objects, direction_from_azimuth
+from geo import lat_long_from_id
 
 def get_visible(lat: float, long: float):
     lat_long = (int(lat), int(long))
@@ -23,15 +24,18 @@ def handler(event: dict, context: dict):
 
     id_rgx = re.compile('^\d+-\d+-\d+-\d+$')
     if not id_rgx.match(location_id):
-        return make_response(400, { 'message': location_id + ' is not a valid location ID' })
+        return make_response(400, { 'message': location_id + ' is not a valid location ID.' })
 
-    [lat, long, zone_x, zone_y] = location_id.split('-')
-    lat_float = float(lat)
-    long_float = float(long)
+    lat_long = lat_long_from_id(location_id)
+
+    if lat_long == None:
+        return make_response(400, { 'message': 'The specified zone is out of bounds.' })
+
+    (lat, long) = lat_long
 
     return make_response(200, {
         'locationID': location_id,
-        'latitude': lat_float,
-        'longitude': long_float,
-        'visible': get_visible(lat_float, long_float)
+        'latitude': lat,
+        'longitude': long,
+        'visible': get_visible(lat, long)
     })
