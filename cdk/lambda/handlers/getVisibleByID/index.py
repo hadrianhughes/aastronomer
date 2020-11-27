@@ -15,6 +15,7 @@ def get_visible(lat: float, long: float):
 
     return visible_results
 
+
 def handler(event: dict, context: dict):
     params = event['pathParameters']
 
