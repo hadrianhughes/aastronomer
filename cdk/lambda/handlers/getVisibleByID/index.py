@@ -1,14 +1,12 @@
-import re
 from datetime import datetime
-from common import make_response
+from common import make_response, valid_id, valid_iso_date
 from astro import get_all_objects, direction_from_azimuth
 from geo import lat_long_from_id
 
-def get_visible(lat: float, long: float):
+def get_visible(lat: float, long: float, time: str):
     lat_long = (int(lat), int(long))
-    date_string = datetime.now(tz=None).strftime('%Y-%m-%d %H:%M')
 
-    results = get_all_objects(lat_long, date_string)
+    results = get_all_objects(lat_long, time)
 
     visible_results = { obj: { **pos, 'ordinal': direction_from_azimuth(pos['az']) }
                         for (obj, pos) in results.items()
@@ -18,15 +16,20 @@ def get_visible(lat: float, long: float):
 
 
 def handler(event: dict, context: dict):
-    params = event['pathParameters']
+    pathParams = event['pathParameters']
+    queryParams = event['queryStringParameters']
 
-    location_id = params['locationID']
+    location_id = pathParams['locationID']
+    time = queryParams['t'] if 't' in queryParams else None
 
-    id_rgx = re.compile('^\d+-\d+-\d+-\d+$')
-    if not id_rgx.match(location_id):
+    if time and not valid_iso_date(time):
+        return make_response(400, { 'message': time + ' is not a valid ISO formatted date.' })
+
+    if not valid_id(location_id):
         return make_response(400, { 'message': location_id + ' is not a valid location ID.' })
 
     lat_long = lat_long_from_id(location_id)
+    date_time = time or datetime.now(tz=None).isoformat()
 
     if lat_long == None:
         return make_response(400, { 'message': 'The specified zone is out of bounds.' })
@@ -37,5 +40,6 @@ def handler(event: dict, context: dict):
         'location_id': location_id,
         'latitude': lat,
         'longitude': long,
-        'visible_objects': get_visible(lat, long)
+        'time': date_time,
+        'visible_objects': get_visible(lat, long, date_time)
     })

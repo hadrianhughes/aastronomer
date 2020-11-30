@@ -5,7 +5,8 @@ def make_request(location_id):
     return {
         'pathParameters': {
             'locationID': location_id
-        }
+        },
+        'queryStringParameters': {}
     }
 
 
@@ -16,8 +17,9 @@ def test_success():
     assert response['statusCode'] == 200
     assert int(response_body['latitude']) == 90
     assert int(response_body['longitude']) == 0
+    assert 'time' in response_body
 
-    for (k, v) in response_body['visible'].items():
+    for (k, v) in response_body['visible_objects'].items():
         assert v['alt'] > 0
 
 
