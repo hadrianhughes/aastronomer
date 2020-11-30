@@ -34,8 +34,8 @@ def handler(event: dict, context: dict):
     (lat, long) = lat_long
 
     return make_response(200, {
-        'locationID': location_id,
+        'location_id': location_id,
         'latitude': lat,
         'longitude': long,
-        'visible': get_visible(lat, long)
+        'visible_objects': get_visible(lat, long)
     })
