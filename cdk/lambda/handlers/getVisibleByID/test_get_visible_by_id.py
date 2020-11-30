@@ -1,12 +1,14 @@
 import json
 from getVisibleByID.index import handler
 
-def make_request(location_id):
+def make_request(location_id, time = None):
     return {
         'pathParameters': {
             'locationID': location_id
         },
-        'queryStringParameters': {}
+        'queryStringParameters': {
+            **({ 't': time } if time else {})
+        }
     }
 
 
@@ -44,3 +46,12 @@ def test_bad_zone():
 
     bad_y = handler(make_request('0-0-0-15'), {})
     assert bad_y['statusCode'] == 400
+
+
+def test_time():
+    time = '2019-01-01'
+    response = handler(make_request('0-0-0-0', time), {})
+    response_body = json.loads(response['body'])
+
+    assert list(response_body['visible_objects'].keys()) == ['uranus']
+    assert response_body['visible_objects']['uranus']['ordinal'] == 'W'
