@@ -17,7 +17,7 @@ def get_visible(lat: float, long: float, time: str):
 
 def handler(event: dict, context: dict):
     pathParams = event['pathParameters']
-    queryParams = event['queryStringParameters']
+    queryParams = event['queryStringParameters'] if 'queryStringParameters' in event else {}
 
     location_id = pathParams['locationID']
     time = queryParams['t'] if 't' in queryParams else None
