@@ -17,10 +17,10 @@ def get_visible(lat: float, long: float, time: str):
 
 def handler(event: dict, context: dict):
     pathParams = event['pathParameters']
-    queryParams = event['queryStringParameters'] if 'queryStringParameters' in event else {}
+    queryParams = event.get('queryStringParameters', {})
 
     location_id = pathParams['locationID']
-    time = queryParams['t'] if 't' in queryParams else None
+    time = queryParams.get('t')
 
     if time and not valid_iso_date(time):
         return make_response(400, { 'message': time + ' is not a valid ISO formatted date.' })
