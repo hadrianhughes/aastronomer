@@ -23,7 +23,7 @@ export class PlanetsStack extends cdk.Stack {
 
     const edgeLambdaProvider = new lambda.SingletonFunction(this, 'LambdaProvider', {
       uuid: 'f7d4f730-4ee1-11e8-9c2d-fa7ae01bbebc',
-      code: lambda.Code.fromAsset('../cfn'),
+      code: lambda.Code.fromAsset(path.join(__dirname, '..', 'cfn')),
       handler: 'stack.handler',
       timeout: cdk.Duration.seconds(60),
       runtime: lambda.Runtime.NODEJS_10_X
@@ -42,6 +42,7 @@ export class PlanetsStack extends cdk.Stack {
 
     const edgeStackOutput = new cdk.CustomResource(this, 'EdgeStackOutput', {
       serviceToken: edgeStackOutputProvider.serviceToken,
+      pascalCaseProperties: true,
       properties: {
         StackName: props.LAMBDA_EDGE_STACK_NAME,
         OutputKey: props.LAMBDA_OUTPUT_NAME,
