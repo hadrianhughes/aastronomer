@@ -25,9 +25,11 @@
     "@aws-cdk/aws-apigatewayv2-integrations": "^1.74.0",
     "@aws-cdk/aws-cloudfront": "^1.74.0",
     "@aws-cdk/aws-cloudfront-origins": "^1.74.0",
+    "@aws-cdk/aws-iam": "^1.74.0",
     "@aws-cdk/aws-lambda": "^1.74.0",
     "@aws-cdk/aws-lambda-python": "^1.74.0",
     "@aws-cdk/core": "^1.74.0",
+    "sha256-file": "^1.0.0",
     "source-map-support": "^0.5.16"
   }
 }
