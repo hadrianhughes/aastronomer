@@ -1,6 +1,7 @@
 import * as path from 'path'
 import * as cdk from '@aws-cdk/core'
 import * as lambda from '@aws-cdk/aws-lambda-python'
+import { Version } from '@aws-cdk/aws-lambda'
 import * as iam from '@aws-cdk/aws-iam'
 import { PYTHON_RUNTIME } from './globals'
 
@@ -18,9 +19,17 @@ export class EdgeStack extends cdk.Stack {
       }
     })
 
-    const testEdgeFunction = new lambda.PythonFunction(this, 'TestEdgeFunction', {
+    const testEdgeFunction = this.makeEdgeFunction('TestEdgeFunction', 'test_edge')
+
+    new cdk.CfnOutput(this, props.LAMBDA_OUTPUT_NAME, {
+      value: cdk.Fn.join(':', testEdgeFunction)
+    })
+  }
+
+  private makeEdgeFunction(name: string, dir: string): [string, string] {
+    const edgeFunction = new lambda.PythonFunction(this, name, {
       runtime: PYTHON_RUNTIME,
-      entry: path.join(__dirname, '..', 'lambda', 'edge', 'test_edge'),
+      entry: path.join(__dirname, '..', 'lambda', 'edge', dir),
       handler: 'handler',
       role: new iam.Role(this, 'AllowLambdaServiceToAssumeRole', {
         assumedBy: new iam.CompositePrincipal(
@@ -31,13 +40,8 @@ export class EdgeStack extends cdk.Stack {
       })
     })
 
-    const version = testEdgeFunction.addVersion(':sha256:' + sha256(path.join(__dirname, '..', 'lambda', 'edge', 'test_edge', 'index.py')))
+    const functionVersion = edgeFunction.addVersion(':sha256:' + sha256(path.join(__dirname, '..', 'lambda', 'edge', dir, 'index.py')))
 
-    new cdk.CfnOutput(this, props.LAMBDA_OUTPUT_NAME, {
-      value: cdk.Fn.join(':', [
-        testEdgeFunction.functionArn,
-        version.version
-      ])
-    })
+    return [edgeFunction.functionArn, functionVersion.version]
   }
 }
