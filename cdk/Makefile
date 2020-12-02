@@ -4,5 +4,8 @@ venv:
 run_tests:
 	pytest lambda/
 
+deploy-all: run_tests
+	cdk deploy --all
+
 deploy: run_tests
-	cdk deploy
+	cdk deploy PlanetsStack
