@@ -1,14 +1,14 @@
 import * as path from 'path'
 import * as cdk from '@aws-cdk/core'
 import * as lambda from '@aws-cdk/aws-lambda-python'
-import { Version } from '@aws-cdk/aws-lambda'
 import * as iam from '@aws-cdk/aws-iam'
+import * as ssm from '@aws-cdk/aws-ssm'
 import { PYTHON_RUNTIME } from './globals'
 
 const sha256 = require('sha256-file')
 
 interface EdgeStackProps extends cdk.StackProps {
-  LAMBDA_OUTPUT_NAME: string
+  PARAMETER_NAME: string
 }
 
 export class EdgeStack extends cdk.Stack {
@@ -19,17 +19,9 @@ export class EdgeStack extends cdk.Stack {
       }
     })
 
-    const testEdgeFunction = this.makeEdgeFunction('TestEdgeFunction', 'test_edge')
-
-    new cdk.CfnOutput(this, props.LAMBDA_OUTPUT_NAME, {
-      value: cdk.Fn.join(':', testEdgeFunction)
-    })
-  }
-
-  private makeEdgeFunction(name: string, dir: string): [string, string] {
-    const edgeFunction = new lambda.PythonFunction(this, name, {
+    const testEdgeFunction = new lambda.PythonFunction(this, 'TestEdgeFunction', {
       runtime: PYTHON_RUNTIME,
-      entry: path.join(__dirname, '..', 'lambda', 'edge', dir),
+      entry: path.join(__dirname, '..', 'lambda', 'edge', 'test_edge'),
       handler: 'handler',
       role: new iam.Role(this, 'AllowLambdaServiceToAssumeRole', {
         assumedBy: new iam.CompositePrincipal(
@@ -40,8 +32,10 @@ export class EdgeStack extends cdk.Stack {
       })
     })
 
-    const functionVersion = edgeFunction.addVersion(':sha256:' + sha256(path.join(__dirname, '..', 'lambda', 'edge', dir, 'index.py')))
-
-    return [edgeFunction.functionArn, functionVersion.version]
+    new ssm.StringParameter(this, 'EdgeTestARN', {
+      parameterName: `/PlanetsAPI/${props.PARAMETER_NAME}`,
+      description: 'CDK parameter stored for cross-region Lambda@Edge function',
+      stringValue: testEdgeFunction.currentVersion.functionArn
+    })
   }
 }
