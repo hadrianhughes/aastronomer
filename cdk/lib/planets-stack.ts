@@ -7,8 +7,6 @@ import { PlanetsAPI } from './api'
 import { PlanetsLambdaLibrary } from './lambda'
 import { EdgeHandler } from './edge-handler'
 
-const sha256 = require('sha256-file')
-
 interface PlanetsStackProps extends cdk.StackProps {
   LAMBDA_EDGE_PARAMETER_NAME: string
 }

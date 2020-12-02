@@ -5,8 +5,6 @@ import * as iam from '@aws-cdk/aws-iam'
 import * as ssm from '@aws-cdk/aws-ssm'
 import { PYTHON_RUNTIME } from './globals'
 
-const sha256 = require('sha256-file')
-
 interface EdgeStackProps extends cdk.StackProps {
   PARAMETER_NAME: string
 }
