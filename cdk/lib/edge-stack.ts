@@ -5,12 +5,8 @@ import * as iam from '@aws-cdk/aws-iam'
 import * as ssm from '@aws-cdk/aws-ssm'
 import { PYTHON_RUNTIME } from './globals'
 
-interface EdgeStackProps extends cdk.StackProps {
-  PARAMETER_NAME: string
-}
-
 export class EdgeStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props: EdgeStackProps) {
+  constructor(scope: cdk.Construct, id: string) {
     super(scope, id, {
       env: {
         region: 'us-east-1'
@@ -31,7 +27,7 @@ export class EdgeStack extends cdk.Stack {
     })
 
     new ssm.StringParameter(this, 'EdgeTestARN', {
-      parameterName: `/PlanetsAPI/${props.PARAMETER_NAME}`,
+      parameterName: `/PlanetsAPI/EdgeTestARN`,
       description: 'CDK parameter stored for cross-region Lambda@Edge function',
       stringValue: testEdgeFunction.currentVersion.functionArn
     })

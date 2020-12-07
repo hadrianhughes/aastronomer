@@ -5,7 +5,6 @@ import * as lambda from '@aws-cdk/aws-lambda'
 
 interface EdgeHandlerProps {
   stack: cdk.Stack
-  parameterName: string
 }
 
 export class EdgeHandler extends cdk.Construct {
@@ -23,7 +22,7 @@ export class EdgeHandler extends cdk.Construct {
             props.stack.formatArn({
               service: 'ssm',
               region: 'us-east-1',
-              resource: `parameter/PlanetsAPI/${props.parameterName}`
+              resource: `parameter/PlanetsAPI/EdgeTestARN`
             })
           ]
         })
@@ -32,7 +31,7 @@ export class EdgeHandler extends cdk.Construct {
         service: 'SSM',
         action: 'getParameter',
         parameters: {
-          Name: `/PlanetsAPI/${props.parameterName}`
+          Name: `/PlanetsAPI/EdgeTestARN`
         },
         region: 'us-east-1',
         physicalResourceId: cr.PhysicalResourceId.of(Date.now().toString())
