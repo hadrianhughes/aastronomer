@@ -5,17 +5,8 @@ import * as iam from '@aws-cdk/aws-iam'
 import * as ssm from '@aws-cdk/aws-ssm'
 import { PYTHON_RUNTIME, Dict } from './globals'
 
-export type ResourcePile = {
-  layers: Dict<string>,
-  functions: Dict<string>
-}
-
-interface EdgeStackProps {
-  exportName: string
-}
-
 export class EdgeStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props: EdgeStackProps) {
+  constructor(scope: cdk.Construct, id: string) {
     super(scope, id, {
       env: {
         region: 'us-east-1'
@@ -24,28 +15,27 @@ export class EdgeStack extends cdk.Stack {
 
     // Make layers
     const layers: Dict<string> = {
-      'astro': this.makeLayer('AstroLayer', 'A Python layer containing the core logic for the API', 'astro'),
-      'common': this.makeLayer('CommonLayer', 'A Python layer containing utility functions to be used across the project', 'common'),
-      'geo': this.makeLayer('GeoLayer', 'A Python layer containing the logic for geographical positioning', 'geo')
+      'Astro': this.makeLayer('AstroLayer', 'A Python layer containing the core logic for the API', 'astro'),
+      'Common': this.makeLayer('CommonLayer', 'A Python layer containing utility functions to be used across the project', 'common'),
+      'Geo': this.makeLayer('GeoLayer', 'A Python layer containing the logic for geographical positioning', 'geo')
     }
 
     // Make Lambda@Edge functions
-    const testEdgeFunction = this.makeEdgeFunction('TestEdgeFunction', 'test_edge')
-
-    const resourcePile: ResourcePile = {
-      layers,
-      functions: { testEdgeFunction }
+    const edgeFunctions: Dict<string> = {
+      'TestEdge': this.makeEdgeFunction('TestEdge', 'test_edge')
     }
 
-    const resourcesBase64: string = Buffer.from(
-      JSON.stringify(resourcePile)
-    ).toString('base64')
+    Object.keys(layers).forEach(key => new ssm.StringParameter(this, `${key}ARN`, {
+      parameterName: `/PlanetsAPI/${key}ARN`,
+      description: `CDK parameter for ${key} Lambda Layer`,
+      stringValue: layers[key]
+    }))
 
-    new ssm.StringParameter(this, props.exportName, {
-      parameterName: `/PlanetsAPI/${props.exportName}`,
-      description: 'CDK parameter for Lambda@Edge functions and layers',
-      stringValue: resourcesBase64
-    })
+    Object.keys(edgeFunctions).forEach(key => new ssm.StringParameter(this, `${key}ARN`, {
+      parameterName: `/PlanetsAPI/${key}ARN`,
+      description: `CDK parameter from ${key} Lambda@Edge function`,
+      stringValue: edgeFunctions[key]
+    }))
   }
 
   private makeLayer(name: string, description: string, dir: string): string {

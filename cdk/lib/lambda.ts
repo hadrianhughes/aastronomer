@@ -10,7 +10,7 @@ interface LambdaLibraryProps {
 }
 
 export class PlanetsLambdaLibrary extends cdk.Construct {
-  public readonly functions: { [key: string]: lambda.PythonFunction | null } = {}
+  public readonly functions: Dict<lambda.PythonFunction> = {}
 
   constructor(scope: cdk.Construct, id: string, props: LambdaLibraryProps) {
     super(scope, id)
@@ -19,20 +19,12 @@ export class PlanetsLambdaLibrary extends cdk.Construct {
     this.functions.getVisibleByID = this.makeFunction(
       'GetVisibleByID',
       'getVisibleByID',
-      [props.layers.astro, props.layers.common, props.layers.geo],
+      [props.layers.Astro, props.layers.Common, props.layers.Geo],
       {
         timeout: Duration.seconds(10),
         memorySize: 2048
       }
     )
-  }
-
-  private makeLayer(name: string, description: string, dir: string): lambda.PythonLayerVersion {
-    return new lambda.PythonLayerVersion(this, name, {
-      entry: path.join(__dirname, '..', 'lambda', 'layers', dir),
-      compatibleRuntimes: [PYTHON_RUNTIME],
-      description
-    })
   }
 
   private makeFunction(name: string, dir: string, layers: ILayerVersion[], props?: object) {

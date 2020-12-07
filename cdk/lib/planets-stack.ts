@@ -7,19 +7,17 @@ import { PlanetsAPI } from './api'
 import { PlanetsLambdaLibrary } from './lambda'
 import { EdgeHandler } from './edge-handler'
 
-interface PlanetsStackProps extends cdk.StackProps {
-  edgeExportName: string
-}
-
 export class PlanetsStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props: PlanetsStackProps) {
-    super(scope, id, props);
+  constructor(scope: cdk.Construct, id: string) {
+    super(scope, id);
 
     // Set up Lambda@Edge functions from EdgeStack us-east-1
-    const edgeHandler = new EdgeHandler(this, 'EdgeHandler', { edgeExportName: props.edgeExportName })
+    const edgeHandler = new EdgeHandler(this, 'EdgeHandler')
+    Tags.of(edgeHandler).add('Module', 'EdgeHandler')
 
     // Initialise Lambda assets
     const planetsLambdas = new PlanetsLambdaLibrary(this, 'PlanetsLambdas', { layers: edgeHandler.layers })
+    Tags.of(planetsLambdas).add('Module', 'LambdaLibrary')
 
     // Set up API Gateway
     const api = new PlanetsAPI(this, 'PlanetsAPI', { lambdaLibrary: planetsLambdas })
@@ -43,7 +41,7 @@ export class PlanetsStack extends cdk.Stack {
               lambdaFunctionAssociations: [
                 {
                   eventType: cf.LambdaEdgeEventType.VIEWER_REQUEST,
-                  lambdaFunction: edgeHandler.edgeFunctions.testEdgeFunction
+                  lambdaFunction: edgeHandler.edgeFunctions.TestEdge
                 }
               ]
             }
@@ -51,6 +49,7 @@ export class PlanetsStack extends cdk.Stack {
         }
       ]
     })
+    Tags.of(distribution).add('Module', 'CFDistribution')
 
 
     // Generate outputs
