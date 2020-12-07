@@ -2,14 +2,20 @@ import * as cdk from '@aws-cdk/core';
 import * as cr from '@aws-cdk/custom-resources'
 import * as iam from '@aws-cdk/aws-iam'
 import * as lambda from '@aws-cdk/aws-lambda'
+import { Dict } from './globals'
+
+interface EdgeHandlerProps {
+  edgeExportName: string
+}
 
 export class EdgeHandler extends cdk.Construct {
-  private parameters: { [key: string]: cr.AwsCustomResource } = {}
+  public readonly layers: Dict<lambda.ILayerVersion>
+  public readonly edgeFunctions: Dict<lambda.IVersion>
 
-  constructor(scope: cdk.Construct, id: string) {
+  constructor(scope: cdk.Construct, id: string, props: EdgeHandlerProps) {
     super(scope, id)
 
-    this.parameters.EdgeTest = new cr.AwsCustomResource(this, 'GetParameter', {
+    const resourcesBase64 = new cr.AwsCustomResource(this, 'GetParameter', {
       policy: cr.AwsCustomResourcePolicy.fromStatements([
         new iam.PolicyStatement({
           effect: iam.Effect.ALLOW,
@@ -18,7 +24,7 @@ export class EdgeHandler extends cdk.Construct {
             (scope as cdk.Stack).formatArn({
               service: 'ssm',
               region: 'us-east-1',
-              resource: `parameter/PlanetsAPI/EdgeTestARN`
+              resource: `parameter/PlanetsAPI/${props.edgeExportName}`
             })
           ]
         })
@@ -27,19 +33,33 @@ export class EdgeHandler extends cdk.Construct {
         service: 'SSM',
         action: 'getParameter',
         parameters: {
-          Name: `/PlanetsAPI/EdgeTestARN`
+          Name: `/PlanetsAPI/${props.edgeExportName}`
         },
         region: 'us-east-1',
         physicalResourceId: cr.PhysicalResourceId.of(Date.now().toString())
       }
-    })
-  }
+    }).getResponseField('Parameter.Value')
 
-  public getVersion(key: string): lambda.IVersion {
-    return lambda.Version.fromVersionArn(
-      this,
-      `${key}Version`,
-      this.parameters[key].getResponseField('Parameter.Value')
-    )
+    const { layers, functions } = JSON.parse(Buffer.from(resourcesBase64, 'base64').toString('utf-8'))
+
+    if (!layers || !functions) {
+      throw new ReferenceError('Importing Lambda@Edge and Lambda Layers from us-east-1 failed.')
+    }
+
+    this.layers = Object.keys(layers).reduce<Dict<lambda.ILayerVersion>>((acc, k) => ({
+      [k]: lambda.LayerVersion.fromLayerVersionArn(
+        this,
+        `${k}LayerVersion`,
+        layers[k]
+      )
+    }), {})
+
+    this.edgeFunctions = Object.keys(functions).reduce<Dict<lambda.IVersion>>((acc, k) => ({
+      [k]: lambda.Version.fromVersionArn(
+        this,
+        `${k}EdgeVersion`,
+        functions[k]
+      )
+    }), {})
   }
 }
