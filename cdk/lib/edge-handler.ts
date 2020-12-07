@@ -3,14 +3,10 @@ import * as cr from '@aws-cdk/custom-resources'
 import * as iam from '@aws-cdk/aws-iam'
 import * as lambda from '@aws-cdk/aws-lambda'
 
-interface EdgeHandlerProps {
-  stack: cdk.Stack
-}
-
 export class EdgeHandler extends cdk.Construct {
   private parameters: { [key: string]: cr.AwsCustomResource } = {}
 
-  constructor(scope: cdk.Construct, id: string, props: EdgeHandlerProps) {
+  constructor(scope: cdk.Construct, id: string) {
     super(scope, id)
 
     this.parameters.EdgeTest = new cr.AwsCustomResource(this, 'GetParameter', {
@@ -19,7 +15,7 @@ export class EdgeHandler extends cdk.Construct {
           effect: iam.Effect.ALLOW,
           actions: ['ssm:GetParameter*'],
           resources: [
-            props.stack.formatArn({
+            (scope as cdk.Stack).formatArn({
               service: 'ssm',
               region: 'us-east-1',
               resource: `parameter/PlanetsAPI/EdgeTestARN`

@@ -19,10 +19,7 @@ export class PlanetsStack extends cdk.Stack {
     Tags.of(api).add('Module', 'API')
 
     // Set up Lambda@Edge functions from EdgeStack us-east-1
-    const edgeHandler = new EdgeHandler(this, 'EdgeHandler', {
-      stack: this,
-      parameterName: 'EdgeTestARN'
-    })
+    const edgeHandler = new EdgeHandler(this, 'EdgeHandler')
 
     const distribution = new cf.CloudFrontWebDistribution(this, 'CFDistribution', {
       originConfigs: [
