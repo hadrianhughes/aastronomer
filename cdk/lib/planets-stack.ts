@@ -31,7 +31,7 @@ export class PlanetsStack extends cdk.Stack {
           },
           behaviors: [
             {
-              pathPattern: '/visible/*',
+              pathPattern: '/visible/?*',
               allowedMethods: CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
               isDefaultBehavior: true
             },
