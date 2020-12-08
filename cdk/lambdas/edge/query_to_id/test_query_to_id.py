@@ -22,6 +22,11 @@ def test_bad_uri():
     assert response['statusCode'] == 404
 
 
+def test_success():
+    response = handler(make_request('/visible', 0, 0), {})
+    assert response['uri'] == '/visible/90-0-0-0'
+    assert response['querystring'] == 'foo=bar'
+
 def test_edinburgh():
     decorated_request = handler(make_request('/visible', 55.9, -3.2), {})
     assert decorated_request['uri'] == '/visible/35-356-5-6'
