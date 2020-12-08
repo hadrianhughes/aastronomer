@@ -9,4 +9,12 @@ def handler(event: dict, context: dict):
 
     query_string = request.get('queryStringParameters', {})
 
+    if 'lat' in query_string and 'lon' in query_string:
+        # convert to id
+    elif 'postcode' in query_string:
+        # get lat/lon
+        # convert to id
+    else:
+        return { 'statusCode': 400, 'message': 'You must provide a lat and lon or a postcode.' }
+
     return request
