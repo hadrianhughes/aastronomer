@@ -16,7 +16,7 @@ export class PlanetsStack extends cdk.Stack {
     Tags.of(edgeHandler).add('Module', 'EdgeHandler')
 
     // Initialise Lambda assets
-    const planetsLambdas = new PlanetsLambdaLibrary(this, 'PlanetsLambdas', { layers: edgeHandler.layers })
+    const planetsLambdas = new PlanetsLambdaLibrary(this, 'PlanetsLambdas')
     Tags.of(planetsLambdas).add('Module', 'LambdaLibrary')
 
     // Set up API Gateway

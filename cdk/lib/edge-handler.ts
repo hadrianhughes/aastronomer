@@ -5,7 +5,6 @@ import * as lambda from '@aws-cdk/aws-lambda'
 import { Dict } from './globals'
 
 export class EdgeHandler extends cdk.Construct {
-  public readonly layers: Dict<lambda.ILayerVersion>
   public readonly edgeFunctions: Dict<lambda.IVersion>
   private stack: cdk.Stack
 
@@ -14,22 +13,10 @@ export class EdgeHandler extends cdk.Construct {
 
     this.stack = scope as cdk.Stack
 
-    this.layers =
-      ['Astro', 'Common', 'Geo']
-      .reduce((acc: Dict<lambda.ILayerVersion>, name: string) => {
-        const resource = this.loadParameter(name)
-        const arn = resource.getResponseField('Parameter.Value')
-
-        return {
-          ...acc,
-          [name]: lambda.LayerVersion.fromLayerVersionArn(this, `${name}LayerVersion`, arn)
-        }
-      }, {})
-
     this.edgeFunctions =
       ['TestEdge']
       .reduce((acc: Dict<lambda.IVersion>, name: string) => {
-        const resource = this.loadParameter(name)
+        const resource = this.loadParameter(`${name}ARN`)
         const arn = resource.getResponseField('Parameter.Value')
 
         return {
