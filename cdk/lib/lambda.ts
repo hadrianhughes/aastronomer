@@ -20,7 +20,7 @@ export class PlanetsLambdaLibrary extends cdk.Construct {
     // Create functions
     this.functions.getVisibleByID = this.makeFunction(
       'GetVisibleByID',
-      'getVisibleByID',
+      'get_visible_by_id',
       [this.layers.astro, this.layers.common, this.layers.geo],
       {
         timeout: Duration.seconds(10),

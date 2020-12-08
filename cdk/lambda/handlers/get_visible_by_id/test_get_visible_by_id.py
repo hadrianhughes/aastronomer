@@ -1,5 +1,5 @@
 import json
-from getVisibleByID.index import handler
+from .index import handler
 
 def make_request(location_id, time = None):
     return {

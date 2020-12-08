@@ -36,3 +36,25 @@ def lat_long_from_id(location_id: str):
     zone_width_degrees = 1 / zone_count
 
     return (normalised_lat + (zone_height_degrees * zone_y) + (zone_height_degrees / 2), normalised_long + (zone_width_degrees * zone_x) + (zone_width_degrees / 2))
+
+
+def id_from_lat_long(lat: float, long: float):
+    if lat < -90 or lat > 90 or long < -190 or long > 190:
+        return None
+
+    floored_lat = math.floor(lat)
+    floored_long = math.floor(long)
+
+    region_width = distance_between_points(floored_lat, floored_lat, floored_long, floored_long + 1)
+    zone_count = math.ceil(region_width / ZONE_SIZE)
+
+    zone_height_degrees = 1 / VERTICAL_ZONE_COUNT
+    zone_width_degrees = 1 / zone_count
+
+    zone_x = str(math.floor((long % 1) / zone_width_degrees))
+    zone_y = str(math.floor((lat % 1) / zone_height_degrees))
+
+    lat_part = str(90 - floored_lat)
+    long_part = str(floored_long if long >= 0 else 360 + floored_long)
+
+    return lat_part + '-' + long_part + '-' + zone_x + '-' + zone_y
