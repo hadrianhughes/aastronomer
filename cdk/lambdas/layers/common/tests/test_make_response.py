@@ -1,5 +1,5 @@
 import json
-from common import make_response
+from ..common import make_response
 
 def test_basic():
     response = make_response(200)

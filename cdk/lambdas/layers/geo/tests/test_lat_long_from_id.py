@@ -1,4 +1,4 @@
-from geo import lat_long_from_id
+from ..geo import lat_long_from_id
 
 def test_out_of_bounds():
     assert lat_long_from_id('0-0-0-7') == None

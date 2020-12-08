@@ -1,4 +1,4 @@
-from geo import distance_between_points
+from ..geo import distance_between_points
 
 def test_equator():
     d = distance_between_points(0, 0, 0, 1)
