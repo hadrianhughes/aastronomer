@@ -16,3 +16,5 @@ cdk.out
 **/*.pyc
 **/.pytest_cache/
 **/__pycache__/
+
+lambdas/edge/query_to_id/geo
