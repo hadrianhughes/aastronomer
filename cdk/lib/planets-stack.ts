@@ -7,6 +7,8 @@ import { PlanetsAPI } from './api'
 import { PlanetsLambdaLibrary } from './lambda'
 import { EdgeHandler } from './edge-handler'
 
+const CACHE_TTL_MINUTES = 15
+
 export class PlanetsStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string) {
     super(scope, id);
@@ -33,6 +35,7 @@ export class PlanetsStack extends cdk.Stack {
             {
               isDefaultBehavior: true,
               allowedMethods: CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
+              defaultTtl: cdk.Duration.minutes(CACHE_TTL_MINUTES),
               forwardedValues: {
                 queryString: true
               },
@@ -40,6 +43,7 @@ export class PlanetsStack extends cdk.Stack {
             {
               pathPattern: '/visible',
               allowedMethods: CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
+              defaultTtl: cdk.Duration.minutes(CACHE_TTL_MINUTES),
               forwardedValues: {
                 queryString: true
               },
