@@ -14,7 +14,7 @@ export class EdgeHandler extends cdk.Construct {
     this.stack = scope as cdk.Stack
 
     this.edgeFunctions =
-      ['TestEdge']
+      ['QueryToID']
       .reduce((acc: Dict<lambda.IVersion>, name: string) => {
         const resource = this.loadParameter(`${name}ARN`)
         const arn = resource.getResponseField('Parameter.Value')

@@ -37,7 +37,6 @@ def lat_long_from_id(location_id: str):
 
     return (normalised_lat + (zone_height_degrees * zone_y) + (zone_height_degrees / 2), normalised_long + (zone_width_degrees * zone_x) + (zone_width_degrees / 2))
 
-
 def id_from_lat_long(lat: float, long: float):
     if lat < -90 or lat > 90 or long < -190 or long > 190:
         return None

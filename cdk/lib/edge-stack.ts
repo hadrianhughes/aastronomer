@@ -13,9 +13,16 @@ export class EdgeStack extends cdk.Stack {
       }
     })
 
+    // Import Geo layer here too as cross-region doesn't work
+    const geoLayer = new lambda.PythonLayerVersion(this, 'EdgeGeoLayer', {
+      entry: path.join(__dirname, '..', 'lambda', 'layers', 'geo'),
+      compatibleRuntimes: [PYTHON_RUNTIME],
+      description: 'A Python layer containing the logic for geographical positioning'
+    })
+
     // Make Lambda@Edge functions
     const edgeFunctions: Dict<string> = {
-      'TestEdge': this.makeEdgeFunction('TestEdge', 'test_edge')
+      'QueryToID': this.makeEdgeFunction('QueryToID', 'query_to_id', [geoLayer])
     }
 
     Object.keys(edgeFunctions).forEach(key => new ssm.StringParameter(this, `${key}ARN`, {
@@ -25,7 +32,7 @@ export class EdgeStack extends cdk.Stack {
     }))
   }
 
-  private makeEdgeFunction(name: string, dir: string): string {
+  private makeEdgeFunction(name: string, dir: string, layers: lambda.PythonLayerVersion[]): string {
     return new lambda.PythonFunction(this, name, {
       runtime: PYTHON_RUNTIME,
       entry: path.join(__dirname, '..', 'lambda', 'edge', dir),
@@ -36,7 +43,8 @@ export class EdgeStack extends cdk.Stack {
           new iam.ServicePrincipal('edgelambda.amazonaws.com')
         ),
         managedPolicies: [iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole')]
-      })
+      }),
+      layers
     }).currentVersion.functionArn
   }
 }

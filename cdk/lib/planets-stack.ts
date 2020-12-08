@@ -36,12 +36,12 @@ export class PlanetsStack extends cdk.Stack {
               isDefaultBehavior: true
             },
             {
-              pathPattern: '/test_edge',
+              pathPattern: '/visible',
               allowedMethods: CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
               lambdaFunctionAssociations: [
                 {
                   eventType: cf.LambdaEdgeEventType.VIEWER_REQUEST,
-                  lambdaFunction: edgeHandler.edgeFunctions.TestEdge
+                  lambdaFunction: edgeHandler.edgeFunctions.QueryToID
                 }
               ]
             }
