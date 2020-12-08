@@ -1,3 +1,4 @@
+from urllib.parse import parse_qs
 from geo import id_from_lat_long
 
 possible_paths = {'/visible'}
@@ -5,16 +6,17 @@ possible_paths = {'/visible'}
 def handler(event: dict, context: dict):
     request = event['Records'][0]['cf']['request']
     uri = request['uri']
+    querystring = request['querystring']
 
     if not uri in possible_paths:
         return { 'statusCode': 404 }
 
-    query_string = request.get('queryStringParameters', {})
+    query_params = { k: float(v[0]) for k, v in parse_qs(querystring).items() }
 
-    if 'lat' in query_string and 'long' in query_string:
-        lat_long_id = id_from_lat_long(query_string['lat'], query_string['long'])
+    if 'lat' in query_params and 'long' in query_params:
+        lat_long_id = id_from_lat_long(query_params['lat'], query_params['long'])
         request['uri'] = request['uri'] + '/' + lat_long_id
-    elif 'postcode' in query_string:
+    elif 'postcode' in query_params:
         # get lat/lon
         # convert to id
         return

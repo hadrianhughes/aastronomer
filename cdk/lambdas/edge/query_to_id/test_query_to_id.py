@@ -1,4 +1,5 @@
 import json
+from urllib.parse import urlencode
 from .index import handler
 
 def make_request(uri: str, lat: float, long: float):
@@ -8,10 +9,7 @@ def make_request(uri: str, lat: float, long: float):
                 'cf': {
                     'request': {
                         'uri': uri,
-                        'queryStringParameters': {
-                            'lat': lat,
-                            'long': long
-                        }
+                        'querystring': urlencode({ 'lat': lat, 'long': long })
                     }
                 }
             }
