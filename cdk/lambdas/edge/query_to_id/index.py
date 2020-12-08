@@ -1,4 +1,4 @@
-from geo import id_from_lat_long
+from .geo import id_from_lat_long
 
 possible_paths = {'/visible'}
 

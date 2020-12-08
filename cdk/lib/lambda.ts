@@ -31,7 +31,7 @@ export class PlanetsLambdaLibrary extends cdk.Construct {
 
   private makeLayer(name: string, description: string, dir: string): lambda.PythonLayerVersion {
     return new lambda.PythonLayerVersion(this, name, {
-      entry: path.join(__dirname, '..', 'lambda', 'layers', dir),
+      entry: path.join(__dirname, '..', 'lambdas', 'layers', dir),
       compatibleRuntimes: [PYTHON_RUNTIME],
       description
     })
@@ -40,7 +40,7 @@ export class PlanetsLambdaLibrary extends cdk.Construct {
   private makeFunction(name: string, dir: string, layers: ILayerVersion[], props?: object) {
     return new lambda.PythonFunction(this, name, {
       runtime: PYTHON_RUNTIME,
-      entry: path.join(__dirname, '..', 'lambda', 'handlers', dir),
+      entry: path.join(__dirname, '..', 'lambdas', 'handlers', dir),
       handler: 'handler',
       layers,
       ...(props || {})

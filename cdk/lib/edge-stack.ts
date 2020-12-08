@@ -13,16 +13,9 @@ export class EdgeStack extends cdk.Stack {
       }
     })
 
-    // Import Geo layer here too as cross-region doesn't work
-    const geoLayer = new lambda.PythonLayerVersion(this, 'EdgeGeoLayer', {
-      entry: path.join(__dirname, '..', 'lambda', 'layers', 'geo'),
-      compatibleRuntimes: [PYTHON_RUNTIME],
-      description: 'A Python layer containing the logic for geographical positioning'
-    })
-
     // Make Lambda@Edge functions
     const edgeFunctions: Dict<string> = {
-      'QueryToID': this.makeEdgeFunction('QueryToID', 'query_to_id', [geoLayer])
+      'QueryToID': this.makeEdgeFunction('QueryToID', 'query_to_id')
     }
 
     Object.keys(edgeFunctions).forEach(key => new ssm.StringParameter(this, `${key}ARN`, {
@@ -32,10 +25,10 @@ export class EdgeStack extends cdk.Stack {
     }))
   }
 
-  private makeEdgeFunction(name: string, dir: string, layers: lambda.PythonLayerVersion[]): string {
+  private makeEdgeFunction(name: string, dir: string): string {
     return new lambda.PythonFunction(this, name, {
       runtime: PYTHON_RUNTIME,
-      entry: path.join(__dirname, '..', 'lambda', 'edge', dir),
+      entry: path.join(__dirname, '..', 'lambdas', 'edge', dir),
       handler: 'handler',
       role: new iam.Role(this, 'AllowLambdaServiceToAssumeRole', {
         assumedBy: new iam.CompositePrincipal(
@@ -43,8 +36,7 @@ export class EdgeStack extends cdk.Stack {
           new iam.ServicePrincipal('edgelambda.amazonaws.com')
         ),
         managedPolicies: [iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole')]
-      }),
-      layers
+      })
     }).currentVersion.functionArn
   }
 }
