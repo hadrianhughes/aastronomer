@@ -11,10 +11,10 @@ def handler(event: dict, context: dict):
     if not uri in possible_paths:
         return { 'statusCode': 404 }
 
-    query_params = { k: float(v[0]) for k, v in parse_qs(querystring).items() }
+    query_params = { k: v[0] for k, v in parse_qs(querystring).items() }
 
     if 'lat' in query_params and 'long' in query_params:
-        lat_long_id = id_from_lat_long(query_params['lat'], query_params['long'])
+        lat_long_id = id_from_lat_long(float(query_params['lat']), float(query_params['long']))
         request['uri'] = request['uri'] + '/' + lat_long_id
     elif 'postcode' in query_params:
         # get lat/lon

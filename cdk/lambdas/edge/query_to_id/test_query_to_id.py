@@ -9,7 +9,7 @@ def make_request(uri: str, lat: float, long: float):
                 'cf': {
                     'request': {
                         'uri': uri,
-                        'querystring': urlencode({ 'lat': lat, 'long': long })
+                        'querystring': urlencode({ 'lat': lat, 'long': long, 'foo': 'bar' })
                     }
                 }
             }
