@@ -35,7 +35,7 @@ def get_object(objectName: str, earthPos: (float, float), time: str) -> dict:
     observation_frame = AltAz(obstime=astroTime, location=earthCoord)
     object_alt_az     = objectCoord.transform_to(observation_frame)
 
-    return { 'alt': object_alt_az.alt.deg, 'az': object_alt_az.az.deg }
+    return { 'alt': round(object_alt_az.alt.deg, 2), 'az': round(object_alt_az.az.deg, 2) }
 
 
 def get_all_objects(earthPos: (float, float), time: str) -> dict:
