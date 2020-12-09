@@ -1,6 +1,6 @@
 from .index import handler
 
-def make_request(uri: str):
+def make_request(uri: str) -> dict:
     return {
         'Records': [
             {

@@ -1,4 +1,4 @@
-def handler(event: dict, context: dict):
+def handler(event: dict, context: dict) -> dict:
     request = event['Records'][0]['cf']['request']
     uri = request['uri']
 

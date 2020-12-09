@@ -2,7 +2,7 @@ import json
 from urllib.parse import urlencode
 from .index import handler
 
-def make_request(uri: str, lat: float, long: float):
+def make_request(uri: str, lat: float, long: float) -> dict:
     return {
         'Records': [
             {

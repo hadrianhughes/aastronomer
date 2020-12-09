@@ -1,7 +1,7 @@
 import json
 from .index import handler
 
-def make_request(location_id, time = None):
+def make_request(location_id: str, time: str = None) -> dict:
     return {
         'pathParameters': {
             'locationID': location_id

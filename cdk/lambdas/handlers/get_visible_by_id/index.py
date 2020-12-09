@@ -3,7 +3,7 @@ from common import make_response, valid_id, valid_iso_date
 from astro import get_all_objects, direction_from_azimuth
 from geo import lat_long_from_id
 
-def get_visible(lat: float, long: float, time: str):
+def get_visible(lat: float, long: float, time: str) -> dict:
     lat_long = (int(lat), int(long))
 
     results = get_all_objects(lat_long, time)
@@ -15,7 +15,7 @@ def get_visible(lat: float, long: float, time: str):
     return visible_results
 
 
-def handler(event: dict, context: dict):
+def handler(event: dict, context: dict) -> dict:
     path_params = event['pathParameters']
     query_params = event.get('queryStringParameters', {})
 

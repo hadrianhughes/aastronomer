@@ -5,7 +5,7 @@ ZONE_SIZE = 10 #km
 VERTICAL_ZONE_COUNT = 7
 
 # Haversine Formula
-def distance_between_points(lat1: float, lat2: float, lon1: float, lon2: float):
+def distance_between_points(lat1: float, lat2: float, lon1: float, lon2: float) -> float:
     dLat = math.radians(lat2 - lat1)
     dLon = math.radians(lon2 - lon1)
 
@@ -16,7 +16,7 @@ def distance_between_points(lat1: float, lat2: float, lon1: float, lon2: float):
     return EARTH_RADIUS * c
 
 
-def lat_long_from_id(location_id: str):
+def lat_long_from_id(location_id: str) -> (float, float):
     id_parts = location_id.split('-')
     [lat, long, zone_x, zone_y] = [int(x) for x in id_parts]
 
@@ -37,7 +37,7 @@ def lat_long_from_id(location_id: str):
 
     return (normalised_lat + (zone_height_degrees * zone_y) + (zone_height_degrees / 2), normalised_long + (zone_width_degrees * zone_x) + (zone_width_degrees / 2))
 
-def id_from_lat_long(lat: float, long: float):
+def id_from_lat_long(lat: float, long: float) -> str:
     if lat < -90 or lat > 90 or long < -190 or long > 190:
         return None
 
