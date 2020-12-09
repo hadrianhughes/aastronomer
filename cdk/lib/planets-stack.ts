@@ -41,7 +41,7 @@ export class PlanetsStack extends cdk.Stack {
               },
               lambdaFunctionAssociations: [
                 {
-                  eventType: cf.LambdaEdgeEventType.VIEWER_REQUEST,
+                  eventType: cf.LambdaEdgeEventType.ORIGIN_REQUEST,
                   lambdaFunction: edgeHandler.edgeFunctions.StripAPIPath
                 }
               ]
@@ -56,12 +56,12 @@ export class PlanetsStack extends cdk.Stack {
               lambdaFunctionAssociations: [
                 {
                   eventType: cf.LambdaEdgeEventType.VIEWER_REQUEST,
-                  lambdaFunction: edgeHandler.edgeFunctions.StripAPIPath
+                  lambdaFunction: edgeHandler.edgeFunctions.QueryToID
                 },
                 {
-                  eventType: cf.LambdaEdgeEventType.VIEWER_REQUEST,
-                  lambdaFunction: edgeHandler.edgeFunctions.QueryToID
-                }
+                  eventType: cf.LambdaEdgeEventType.ORIGIN_REQUEST,
+                  lambdaFunction: edgeHandler.edgeFunctions.StripAPIPath
+                },
               ]
             }
           ]

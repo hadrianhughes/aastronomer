@@ -3,12 +3,15 @@ from geo import id_from_lat_long
 
 possible_paths = {'/visible'}
 
+def is_valid_uri(uri: str) -> bool:
+    return uri.replace('/api', '', 1) in possible_paths
+
 def handler(event: dict, context: dict):
     request = event['Records'][0]['cf']['request']
     uri = request['uri']
     querystring = request['querystring']
 
-    if not uri in possible_paths:
+    if not is_valid_uri(uri):
         return { 'statusCode': 404 }
 
     query_params = { k: v[0] for k, v in parse_qs(querystring).items() }
