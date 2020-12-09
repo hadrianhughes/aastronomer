@@ -8,8 +8,10 @@ module.exports = {
     filename: 'bundle.js'
   },
   plugins: [
-    new CopyPlugin([
-      { from: 'static' }
-    ])
+    new CopyPlugin({
+      patterns: [
+        { from: 'static' }
+      ]
+    })
   ]
 }
