@@ -56,11 +56,11 @@ export class PlanetsStack extends cdk.Stack {
               lambdaFunctionAssociations: [
                 {
                   eventType: cf.LambdaEdgeEventType.VIEWER_REQUEST,
-                  lambdaFunction: edgeHandler.edgeFunctions.QueryToID
+                  lambdaFunction: edgeHandler.edgeFunctions.StripAPIPath
                 },
                 {
                   eventType: cf.LambdaEdgeEventType.VIEWER_REQUEST,
-                  lambdaFunction: edgeHandler.edgeFunctions.StripAPIPath
+                  lambdaFunction: edgeHandler.edgeFunctions.QueryToID
                 }
               ]
             }
