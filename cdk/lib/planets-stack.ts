@@ -47,7 +47,7 @@ export class PlanetsStack extends cdk.Stack {
               ]
             },
             {
-              pathPattern: '/visible',
+              pathPattern: '/api/visible',
               allowedMethods: CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
               defaultTtl: cdk.Duration.minutes(CACHE_TTL_MINUTES),
               forwardedValues: {
@@ -61,7 +61,7 @@ export class PlanetsStack extends cdk.Stack {
                 {
                   eventType: cf.LambdaEdgeEventType.ORIGIN_REQUEST,
                   lambdaFunction: edgeHandler.edgeFunctions.StripAPIPath
-                },
+                }
               ]
             }
           ]
