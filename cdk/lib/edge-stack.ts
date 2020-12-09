@@ -15,7 +15,8 @@ export class EdgeStack extends cdk.Stack {
 
     // Make Lambda@Edge functions
     const edgeFunctions: Dict<string> = {
-      'QueryToID': this.makeEdgeFunction('QueryToID', 'query_to_id')
+      'QueryToID': this.makeEdgeFunction('QueryToID', 'query_to_id'),
+      'StripAPIPath': this.makeEdgeFunction('StripAPIPath', 'strip_api_path')
     }
 
     Object.keys(edgeFunctions).forEach(key => new ssm.StringParameter(this, `${key}ARN`, {
