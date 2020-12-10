@@ -23,9 +23,10 @@
           {
             "name": "location_id",
             "in": "path",
-            "description": "ID of observation location",
+            "description": "ID of observation location (Edinburgh: 35-356-5-6)",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "default": "35-356-5-6"
           },
           {
             "name": "t",
@@ -67,23 +68,26 @@
           {
             "name": "lat",
             "in": "query",
-            "description": "Latitude of location to observe from",
+            "description": "Latitude of location to observe from (between -90 and 90)",
             "required": false,
-            "type": "number"
+            "type": "number",
+            "default": 55.9
           },
           {
             "name": "long",
             "in": "query",
-            "description": "Longitude of location to observe from",
+            "description": "Longitude of location to observe from (between -180 and 180)",
             "required": false,
-            "type": "number"
+            "type": "number",
+            "default": -3.2
           },
           {
             "name": "postcode",
             "in": "query",
             "description": "Postcode for location to observe from",
             "required": false,
-            "type": "string"
+            "type": "string",
+            "default": "EH1 2NG"
           }
         ],
         "responses": {
