@@ -7,6 +7,7 @@ import { Dict } from './globals'
 export class EdgeHandler extends cdk.Construct {
   public readonly edgeFunctions: Dict<lambda.IVersion>
   private stack: cdk.Stack
+  public domainCertificateArn: string
 
   constructor(scope: cdk.Construct, id: string) {
     super(scope, id)
@@ -24,6 +25,10 @@ export class EdgeHandler extends cdk.Construct {
           [name]: lambda.Version.fromVersionArn(this, `${name}EdgeVersion`, arn)
         }
       }, {})
+
+
+    const domainCertificateResource = this.loadParameter('CustomDomainCertificateARN')
+    this.domainCertificateArn = domainCertificateResource.getResponseField('Parameter.Value')
   }
 
   private loadParameter(name: string): cr.AwsCustomResource {

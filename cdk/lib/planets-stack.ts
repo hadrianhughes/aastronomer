@@ -10,8 +10,12 @@ import { Swagger } from './swagger'
 
 const CACHE_TTL_MINUTES = 15
 
+interface PlanetsStackProps extends cdk.StackProps {
+  domainName: string
+}
+
 export class PlanetsStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string) {
+  constructor(scope: cdk.Construct, id: string, props: PlanetsStackProps) {
     super(scope, id);
 
     // Set up Lambda@Edge functions from EdgeStack us-east-1
@@ -88,7 +92,14 @@ export class PlanetsStack extends cdk.Stack {
             }
           ]
         }
-      ]
+      ],
+      viewerCertificate: {
+        aliases: [props.domainName],
+        props: {
+          acmCertificateArn: edgeHandler.domainCertificateArn,
+          sslSupportMethod: 'sni-only'
+        }
+      }
     })
     Tags.of(distribution).add('Module', 'CFDistribution')
 
