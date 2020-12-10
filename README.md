@@ -1,6 +1,8 @@
-# planets-api
+# AAStronomer
 
-A REST API for querying currently visible planets, running on AWS.
+AAStronomer is a RESTful API for finding celestial objects visible from your location.
+
+The app logic is written in Python and the app runs in AWS via CDK.
 
 Hosted at: [planets.hadrianhughes.com](https://planets.hadrianhughes.com)
 

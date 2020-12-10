@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "This is the API specification for my Planets API",
+    "description": "This is the Swagger specification for the AAStronomer API",
     "version": "1.0.0",
     "title": "Planets API"
   },
