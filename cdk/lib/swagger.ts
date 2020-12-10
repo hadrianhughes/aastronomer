@@ -10,7 +10,8 @@ export class Swagger extends cdk.Construct {
     super(scope, id)
 
     this.bucket = new s3.Bucket(this, 'SwaggerBucket', {
-      websiteIndexDocument: 'index.html'
+      websiteIndexDocument: 'index.html',
+      versioned: true
     })
 
     new s3Deploy.BucketDeployment(this, 'DeploySwaggerBucket', {
