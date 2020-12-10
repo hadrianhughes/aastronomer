@@ -86,6 +86,8 @@ export class PlanetsStack extends cdk.Stack {
     })
     Tags.of(distribution).add('Module', 'CFDistribution')
 
+    // Deploy changes to Swagger S3 bucket
+    swagger.deployBucket(distribution)
 
     // Generate outputs
     new cdk.CfnOutput(this, 'APIEndpoint', {
