@@ -2,8 +2,32 @@
 
 A REST API for querying currently visible planets, running on AWS.
 
+Hosted at: [planets.hadrianhughes.com](https://planets.hadrianhughes.com)
 
-## Using Lambda Layers Locally
+
+## CDK Structure
+
+The CDK stack structure for the app is as follows:
+
+The **PlanetsStack** is responsible for most of the infrastructure, including:
+  - API Gateway
+  - API Lambda Handlers
+  - Lambda Layers
+  - S3 Buckets (currently just for Swagger)
+  - CloudFront
+
+There is another stack called **EdgeStack**. This is responsible for provisioning resources which are exclusive to us-east-1. This includes:
+  - Lambda@Edge Functions
+  - ACM Certificates
+
+Rather than having to manually keep track of ARNs for cross-region resources, the ARNs of resources created by **EdgeStack** are saved to SSM Parameter Store, and then fetched by the **PlanetsStack** via the **EdgeHandler** class (using Custom Resources).
+
+
+## Lambda Layers
+
+Logic that is shared across multiple API handlers is abstracted into Lambda Layers. This allows other Lambdas to import the shared code as if it were a bundled library.
+
+### Using Lambda Layers Locally
 
 When running in the cloud, Lambda Layers can be imported into Python files just like modules installed via pip. This doesn't work locally which poses a problem for unit testing.
 
