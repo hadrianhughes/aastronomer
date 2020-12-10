@@ -30,11 +30,17 @@ export class PlanetsStack extends cdk.Stack {
     const swagger = new Swagger(this, 'PlanetsSwaggerBucket')
     Tags.of(swagger).add('Module', 'Swagger')
 
+    // Create CF Origin identity to allow read access to S3 bucket
+    const cfS3Identity = new cf.OriginAccessIdentity(this, 'SwaggerS3OriginIdentity', {
+      comment: 'Created by CDK for Planets API'
+    })
+
     const distribution = new cf.CloudFrontWebDistribution(this, 'CFDistribution', {
       originConfigs: [
         {
           s3OriginSource: {
-            s3BucketSource: swagger.bucket
+            s3BucketSource: swagger.bucket,
+            originAccessIdentity: cfS3Identity
           },
           behaviors: [
             {
@@ -85,6 +91,9 @@ export class PlanetsStack extends cdk.Stack {
       ]
     })
     Tags.of(distribution).add('Module', 'CFDistribution')
+
+    // Grant our CF identity access to the Swagger bucket
+    swagger.grantAccessForIdentity(cfS3Identity)
 
     // Deploy changes to Swagger S3 bucket
     swagger.deployBucket(distribution)

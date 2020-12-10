@@ -2,7 +2,7 @@ import * as path from 'path'
 import * as cdk from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3'
 import * as s3Deploy from '@aws-cdk/aws-s3-deployment'
-import { IDistribution } from '@aws-cdk/aws-cloudfront'
+import { IDistribution, IOriginAccessIdentity } from '@aws-cdk/aws-cloudfront'
 
 export class Swagger extends cdk.Construct {
   public readonly bucket: s3.Bucket
@@ -22,5 +22,9 @@ export class Swagger extends cdk.Construct {
       destinationBucket: this.bucket,
       distribution: cfDistribution
     })
+  }
+
+  public grantAccessForIdentity(identity: IOriginAccessIdentity): void {
+    this.bucket.grantRead(identity)
   }
 }
