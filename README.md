@@ -1,4 +1,4 @@
-# AAStronomer
+# AAStronomer 🔭
 
 AAStronomer is a RESTful API for finding celestial objects visible from your location.
 
