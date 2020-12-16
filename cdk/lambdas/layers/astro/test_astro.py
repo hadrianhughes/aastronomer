@@ -1,17 +1,18 @@
 from .astro import get_object, get_all_objects, direction_from_azimuth
 
 expected_greenwich_2000 = [
-    ('mercury', { 'alt': -62, 'az': 17 }),
-    ('venus', { 'alt': -43, 'az': 59 }),
-    ('mars', { 'alt': -34, 'az': 294 }),
-    ('jupiter', { 'alt': 15, 'az': 264 }),
-    ('saturn', { 'alt': 27, 'az': 254 }),
-    ('uranus', { 'alt': -44, 'az': 305 }),
-    ('neptune', { 'alt': -52, 'az': 318 })
+    ('mercury', {'alt': -62, 'az': 17}),
+    ('venus', {'alt': -43, 'az': 59}),
+    ('mars', {'alt': -34, 'az': 294}),
+    ('jupiter', {'alt': 15, 'az': 264}),
+    ('saturn', {'alt': 27, 'az': 254}),
+    ('uranus', {'alt': -44, 'az': 305}),
+    ('neptune', {'alt': -52, 'az': 318})
 ]
 
 greenwich_lat_long = (51.4934, 0.0098)
 datetime_2000 = '2000-01-01 00:00'
+
 
 def test_get_object():
     for (objName, position) in expected_greenwich_2000:
@@ -29,8 +30,9 @@ def test_get_all_objects():
 
 
 def test_direction_from_azimuth_invalid():
-    assert direction_from_azimuth(-1) == None
-    assert direction_from_azimuth(370) == None
+    assert direction_from_azimuth(-1) is None
+    assert direction_from_azimuth(370) is None
+
 
 def test_direction_from_azimuth():
     assert direction_from_azimuth(337.5) == 'N'

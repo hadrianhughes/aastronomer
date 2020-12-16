@@ -9,7 +9,7 @@ symlinks:
 run_tests:
 	cp -r ./lambdas/layers/geo ./lambdas/edge/query_to_id
 	rm -rf ./lambdas/edge/query_to_id/geo/tests
-	pytest lambdas/
+	python3 -m pytest ./lambdas
 	rm -rf ./lambdas/edge/query_to_id/geo
 
 deploy: run_tests

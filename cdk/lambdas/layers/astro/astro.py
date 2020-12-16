@@ -28,14 +28,17 @@ def get_object(objectName: str, earthPos: (float, float), time: str) -> dict:
     """
 
     (lat, long) = earthPos
-    astroTime   = Time(time)
+    astroTime = Time(time)
     objectCoord = get_body(objectName, astroTime)
-    earthCoord  = EarthLocation(lat=lat*u.deg, lon=long*u.deg)
+    earthCoord = EarthLocation(lat=lat*u.deg, lon=long*u.deg)
 
     observation_frame = AltAz(obstime=astroTime, location=earthCoord)
-    object_alt_az     = objectCoord.transform_to(observation_frame)
+    object_alt_az = objectCoord.transform_to(observation_frame)
 
-    return { 'alt': round(object_alt_az.alt.deg, 2), 'az': round(object_alt_az.az.deg, 2) }
+    return {
+        'alt': round(object_alt_az.alt.deg, 2),
+        'az': round(object_alt_az.az.deg, 2)
+    }
 
 
 def get_all_objects(earthPos: (float, float), time: str) -> dict:
@@ -49,8 +52,8 @@ def get_all_objects(earthPos: (float, float), time: str) -> dict:
     :return: A dict of each object with its altitude and azimuth
     :rtype:  { ...{ object: { 'alt': float, 'az': float } } }
     """
-    alt_azs = { obj: get_object(obj, earthPos, time)
-                for obj in celestial_objects }
+    alt_azs = {obj: get_object(obj, earthPos, time)
+               for obj in celestial_objects}
 
     return alt_azs
 

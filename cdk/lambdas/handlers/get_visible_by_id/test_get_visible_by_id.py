@@ -1,13 +1,14 @@
 import json
 from .index import handler
 
+
 def make_request(location_id: str, time: str = None) -> dict:
     return {
         'pathParameters': {
             'locationID': location_id
         },
         'queryStringParameters': {
-            **({ 't': time } if time else {})
+            **({'t': time} if time else {})
         }
     }
 
