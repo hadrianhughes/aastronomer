@@ -7,8 +7,7 @@ import { PlanetsAPI } from './api'
 import { PlanetsLambdaLibrary } from './lambda'
 import { EdgeHandler } from './edge-handler'
 import { Swagger } from './swagger'
-
-const CACHE_TTL_MINUTES = 15
+import { API_CACHE_TTL_MINUTES, SWAGGER_CACHE_TTL_DAYS } from './globals'
 
 interface PlanetsStackProps extends cdk.StackProps {
   domainName: string
@@ -49,6 +48,7 @@ export class PlanetsStack extends cdk.Stack {
           behaviors: [
             {
               allowedMethods: CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
+              defaultTtl: cdk.Duration.days(SWAGGER_CACHE_TTL_DAYS),
               isDefaultBehavior: true
             }
           ]
@@ -61,7 +61,7 @@ export class PlanetsStack extends cdk.Stack {
             {
               pathPattern: '/api/visible',
               allowedMethods: CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
-              defaultTtl: cdk.Duration.minutes(CACHE_TTL_MINUTES),
+              defaultTtl: cdk.Duration.minutes(API_CACHE_TTL_MINUTES),
               forwardedValues: {
                 queryString: true
               },
@@ -79,7 +79,7 @@ export class PlanetsStack extends cdk.Stack {
             {
               pathPattern: '/api/*',
               allowedMethods: CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
-              defaultTtl: cdk.Duration.minutes(CACHE_TTL_MINUTES),
+              defaultTtl: cdk.Duration.minutes(API_CACHE_TTL_MINUTES),
               forwardedValues: {
                 queryString: true
               },
