@@ -31,8 +31,8 @@ export class EdgeHandler extends cdk.Construct {
     this.domainCertificateArn = domainCertificateResource.getResponseField('Parameter.Value')
   }
 
-  private loadParameter(name: string): cr.AwsCustomResource {
-    return new cr.AwsCustomResource(this, `Get${name}Parameter`, {
+  private loadParameter = (name: string): cr.AwsCustomResource => (
+    new cr.AwsCustomResource(this, `Get${name}Parameter`, {
       policy: cr.AwsCustomResourcePolicy.fromStatements([
         new iam.PolicyStatement({
           effect: iam.Effect.ALLOW,
@@ -56,5 +56,5 @@ export class EdgeHandler extends cdk.Construct {
         physicalResourceId: cr.PhysicalResourceId.of(Date.now().toString())
       }
     })
-  }
+  )
 }

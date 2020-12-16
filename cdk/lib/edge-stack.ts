@@ -58,12 +58,12 @@ export class EdgeStack extends cdk.Stack {
     })
   }
 
-  private makeEdgeFunction(name: string, dir: string): string {
-    return new lambda.PythonFunction(this, name, {
+  private makeEdgeFunction = (name: string, dir: string): string => (
+    new lambda.PythonFunction(this, name, {
       runtime: PYTHON_RUNTIME,
       entry: path.join(__dirname, '..', 'lambdas', 'edge', dir),
       handler: 'handler',
       role: this.customIamRole
     }).currentVersion.functionArn
-  }
+  )
 }
