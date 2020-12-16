@@ -41,7 +41,7 @@ export class EdgeHandler extends cdk.Construct {
             this.stack.formatArn({
               service: 'ssm',
               region: 'us-east-1',
-              resource: `parameter/PlanetsAPI/${name}`
+              resource: `parameter/AAStronomer/${name}`
             })
           ]
         })
@@ -50,7 +50,7 @@ export class EdgeHandler extends cdk.Construct {
         service: 'SSM',
         action: 'getParameter',
         parameters: {
-          Name: `/PlanetsAPI/${name}`
+          Name: `/AAStronomer/${name}`
         },
         region: 'us-east-1',
         physicalResourceId: cr.PhysicalResourceId.of(Date.now().toString())

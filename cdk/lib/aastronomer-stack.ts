@@ -3,39 +3,39 @@ import * as cf from '@aws-cdk/aws-cloudfront'
 import { CloudFrontAllowedMethods } from '@aws-cdk/aws-cloudfront'
 import { HttpOrigin } from '@aws-cdk/aws-cloudfront-origins'
 import { Tags } from '@aws-cdk/core'
-import { PlanetsAPI } from './api'
-import { PlanetsLambdaLibrary } from './lambda'
+import { AAStronomerAPI } from './api'
+import { AAStronomerLambdaLibrary } from './lambda'
 import { EdgeHandler } from './edge-handler'
 import { Swagger } from './swagger'
 import { API_CACHE_TTL_MINUTES, SWAGGER_CACHE_TTL_DAYS } from './globals'
 
-interface PlanetsStackProps extends cdk.StackProps {
+interface AAStronomerStackProps extends cdk.StackProps {
   domainName: string
 }
 
-export class PlanetsStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props: PlanetsStackProps) {
-    super(scope, id);
+export class AAStronomerStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, props: AAStronomerStackProps) {
+    super(scope, id, props);
 
     // Set up Lambda@Edge functions from EdgeStack us-east-1
     const edgeHandler = new EdgeHandler(this, 'EdgeHandler')
     Tags.of(edgeHandler).add('Module', 'EdgeHandler')
 
     // Initialise Lambda assets
-    const planetsLambdas = new PlanetsLambdaLibrary(this, 'PlanetsLambdas')
-    Tags.of(planetsLambdas).add('Module', 'LambdaLibrary')
+    const aastronomerLambdas = new AAStronomerLambdaLibrary(this, 'AAStronomerLambdas')
+    Tags.of(aastronomerLambdas).add('Module', 'LambdaLibrary')
 
     // Set up API Gateway
-    const api = new PlanetsAPI(this, 'PlanetsAPI', { lambdaLibrary: planetsLambdas })
+    const api = new AAStronomerAPI(this, 'AAStronomerAPI', { lambdaLibrary: aastronomerLambdas })
     Tags.of(api).add('Module', 'API')
 
     // Set up S3 bucket for Swagger page
-    const swagger = new Swagger(this, 'PlanetsSwaggerBucket')
+    const swagger = new Swagger(this, 'AAStronomerSwaggerBucket')
     Tags.of(swagger).add('Module', 'Swagger')
 
     // Create CF Origin identity to allow read access to S3 bucket
     const cfS3Identity = new cf.OriginAccessIdentity(this, 'SwaggerS3OriginIdentity', {
-      comment: 'Created by CDK for Planets API'
+      comment: 'Created by CDK for AAStronomer'
     })
 
     const distribution = new cf.CloudFrontWebDistribution(this, 'CFDistribution', {

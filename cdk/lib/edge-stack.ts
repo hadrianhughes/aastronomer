@@ -38,7 +38,7 @@ export class EdgeStack extends cdk.Stack {
 
     // Export an SSM Parameter for each function
     Object.keys(edgeFunctions).forEach(key => new ssm.StringParameter(this, `${key}ARN`, {
-      parameterName: `/PlanetsAPI/${key}ARN`,
+      parameterName: `/AAStronomer/${key}ARN`,
       description: `CDK parameter from ${key} Lambda@Edge function`,
       stringValue: edgeFunctions[key]
     }))
@@ -52,7 +52,7 @@ export class EdgeStack extends cdk.Stack {
 
     // Export SSM Parameter for Certificate ARN
     new ssm.StringParameter(this, 'CustomDomainCertificateARN', {
-      parameterName: '/PlanetsAPI/CustomDomainCertificateARN',
+      parameterName: '/AAStronomer/CustomDomainCertificateARN',
       description: 'CDK parameter for Custom Domain Certificate',
       stringValue: certificate.certificateArn
     })

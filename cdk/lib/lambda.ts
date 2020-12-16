@@ -5,7 +5,7 @@ import * as lambda from '@aws-cdk/aws-lambda-python'
 import { ILayerVersion } from '@aws-cdk/aws-lambda'
 import { PYTHON_RUNTIME, Dict } from './globals'
 
-export class PlanetsLambdaLibrary extends cdk.Construct {
+export class AAStronomerLambdaLibrary extends cdk.Construct {
   public readonly layers: Dict<lambda.PythonLayerVersion> = {}
   public readonly functions: Dict<lambda.PythonFunction> = {}
 

@@ -5,13 +5,13 @@ import * as apig from '@aws-cdk/aws-apigatewayv2'
 import { LambdaProxyIntegration } from '@aws-cdk/aws-apigatewayv2-integrations'
 import { PYTHON_RUNTIME } from './globals'
 import * as lambda from '@aws-cdk/aws-lambda-python'
-import { PlanetsLambdaLibrary } from './lambda'
+import { AAStronomerLambdaLibrary } from './lambda'
 
 interface APIProps {
-  lambdaLibrary: PlanetsLambdaLibrary
+  lambdaLibrary: AAStronomerLambdaLibrary
 }
 
-export class PlanetsAPI extends cdk.Construct {
+export class AAStronomerAPI extends cdk.Construct {
   public readonly api: apig.HttpApi
 
   constructor(scope: cdk.Construct, id: string, props: APIProps) {
