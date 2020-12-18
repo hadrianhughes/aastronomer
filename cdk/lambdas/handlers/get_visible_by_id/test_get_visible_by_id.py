@@ -18,6 +18,7 @@ def test_success():
     response_body = json.loads(response['body'])
 
     assert response['statusCode'] == 200
+    assert response['headers']['Content-Type'] == 'application/json'
     assert int(response_body['latitude']) == 90
     assert int(response_body['longitude']) == 0
     assert 'time' in response_body

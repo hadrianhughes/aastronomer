@@ -38,7 +38,7 @@ def handler(event: dict, context: dict) -> dict:
         if location is None:
             return {
                 'statusCode': 404,
-                'message': 'The postcode ' + postcode + ' could not be found.'
+                'body': 'The postcode ' + postcode + ' could not be found.'
             }
 
         lat_long_id = id_from_lat_long(location.latitude, location.longitude)
@@ -48,7 +48,7 @@ def handler(event: dict, context: dict) -> dict:
     else:
         return {
             'statusCode': 400,
-            'message': 'You must provide a lat and lon or a postcode.'
+            'body': 'You must provide a lat and lon or a postcode.'
         }
 
     request['querystring'] = urlencode(query_params)

@@ -26,22 +26,16 @@ def handler(event: dict, context: dict) -> dict:
     time = query_params.get('t')
 
     if time and not valid_iso_date(time):
-        return make_response(400, {
-            'message': time + ' is not a valid ISO formatted date.'
-        })
+        return make_response(400, time + ' is not a valid ISO formatted date.')
 
     if not valid_id(location_id):
-        return make_response(400, {
-            'message': location_id + ' is not a valid location ID.'
-        })
+        return make_response(400, location_id + ' is not a valid location ID.')
 
     lat_long = lat_long_from_id(location_id)
     date_time = time or datetime.now(tz=None).isoformat()
 
     if lat_long is None:
-        return make_response(400, {
-            'message': 'The specified zone is out of bounds.'
-        })
+        return make_response(400, 'The specified zone is out of bounds.')
 
     (lat, long) = lat_long
 
@@ -51,4 +45,4 @@ def handler(event: dict, context: dict) -> dict:
         'longitude': long,
         'time': date_time,
         'visible_objects': get_visible(lat, long, date_time)
-    })
+    }, is_json=True)

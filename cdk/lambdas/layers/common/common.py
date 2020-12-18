@@ -3,7 +3,12 @@ import re
 import dateutil.parser
 
 
-def make_response(status: int, body={}, headers: dict = {}) -> dict:
+def make_response(
+    status: int,
+    body=None,
+    headers: dict = {},
+    is_json: bool = False
+) -> dict:
     """Return a response dict in the format expected by API gateway
 
     :param status:  The status code of the response
@@ -13,13 +18,16 @@ def make_response(status: int, body={}, headers: dict = {}) -> dict:
     :return: The response dictionary
     :rtype:  dict
     """
+    if body is None:
+        body = {} if is_json else ''
+
     return {
         'statusCode': status,
         'headers': {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json' if is_json else 'text/plain',
             **headers,
         },
-        'body': json.dumps(body)
+        'body': json.dumps(body) if is_json else body
     }
 
 

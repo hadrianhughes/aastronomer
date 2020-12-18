@@ -1,4 +1,4 @@
-from common import valid_id
+from common import valid_id, make_response
 from geo import lat_long_from_id
 
 
@@ -7,12 +7,9 @@ def handler(event: dict, context: dict) -> dict:
     id_param = path_params['locationID']
 
     if not valid_id(id_param):
-        return {'statusCode': 404, 'body': id_param + ' is not a valid ID'}
+        return make_response(404, id_param + ' is not a valid ID')
 
     if lat_long_from_id(id_param) is None:
-        return {
-            'statusCode': 404,
-            'body': 'The ID ' + id_param + ' is out of range'
-        }
+        return make_response(404, 'The ID ' + id_param + ' is out of range')
 
-    return {'statusCode': 200, 'body': id_param}
+    return make_response(200, id_param)
