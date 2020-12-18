@@ -27,6 +27,12 @@ export class AAStronomerLambdaLibrary extends cdk.Construct {
         memorySize: 2048
       }
     )
+
+    this.functions.getID = this.makeFunction(
+      'GetID',
+      'get_id',
+      [this.layers.common]
+    )
   }
 
   private makeLayer = (name: string, description: string, dir: string): lambda.PythonLayerVersion => (

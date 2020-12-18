@@ -6,6 +6,19 @@ The app logic is written in Python and the app runs in AWS via CDK.
 
 Hosted at: [planets.hadrianhughes.com](https://planets.hadrianhughes.com)
 
+## Endpoints
+
+There are currently four API endpoints available:
+
+| Endpoint     | Description                                                                                            |
+|--------------|--------------------------------------------------------------------------------------------------------|
+| /visible     | Attempts to find the ID for a location from lat/long or postcode and returns a list of visible objects |
+| /visible/:id | Returns a list of visible objects from :id location                                                    |
+| /id          | Attempts to find the ID for a location from lat/long or postcode and returns that ID                   |
+| /id/:id      | Takes an ID and returns that ID if it is valid. This is effectively a noop without the /id endpoint    |
+
+Full Swagger spec for endpoints at the URL above.
+
 
 ## CDK Structure
 

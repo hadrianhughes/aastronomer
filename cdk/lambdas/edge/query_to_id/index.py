@@ -2,7 +2,7 @@ from urllib.parse import parse_qs, urlencode
 from geo import id_from_lat_long
 from geopy.geocoders import Nominatim
 
-possible_paths = {'/visible'}
+possible_paths = {'/visible', '/id'}
 
 
 def is_valid_uri(uri: str) -> bool:

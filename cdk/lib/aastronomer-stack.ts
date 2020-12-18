@@ -77,6 +77,21 @@ export class AAStronomerStack extends cdk.Stack {
               ]
             },
             {
+              pathPattern: '/api/id',
+              allowedMethods: CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
+              defaultTtl: cdk.Duration.minutes(API_CACHE_TTL_MINUTES),
+              lambdaFunctionAssociations: [
+                {
+                  eventType: cf.LambdaEdgeEventType.VIEWER_REQUEST,
+                  lambdaFunction: edgeHandler.edgeFunctions.QueryToID
+                },
+                {
+                  eventType: cf.LambdaEdgeEventType.ORIGIN_REQUEST,
+                  lambdaFunction: edgeHandler.edgeFunctions.StripAPIPath
+                }
+              ]
+            },
+            {
               pathPattern: '/api/*',
               allowedMethods: CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
               defaultTtl: cdk.Duration.minutes(API_CACHE_TTL_MINUTES),
