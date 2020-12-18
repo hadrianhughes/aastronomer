@@ -1,6 +1,6 @@
 {
-  "name": "planets-api-swagger",
-  "version": "0.0.0",
+  "name": "aastronomer-swagger",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {

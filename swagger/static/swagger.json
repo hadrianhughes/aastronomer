@@ -53,7 +53,7 @@
       "get": {
         "summary": "Get list of planets visible from a given location",
         "description": "Get a list of planets visible from a given location either using its postcode or latitude and longitude. Lat/Long will be favoured over postcode if both are given.",
-        "operationId": "getVisible",
+        "operationId": "queryVisible",
         "produces": [
           "application/json"
         ],
@@ -102,7 +102,43 @@
           }
         }
       }
-    }
+    },
+    "/id/{location_id}": {
+      "get": {
+        "summary": "Verify and return value of {location_id}",
+        "description": "Just returns the input if the ID is valid. 404 otherwise. Intended to be used with the /id endpoint.",
+        "operationId": "getID",
+        "produces": [
+          "text/plain"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "The ID given is invalid/out of range"
+          }
+        }
+      }
+    },
+   "/id": {
+     "get": {
+       "summary": "Return the ID associated with the given lat/long or postcode",
+       "description": "Attempts to find the ID associated with the lat/long or postcode parameters given. Lat/long is prioritised if both are given.",
+       "operationId": "queryID",
+       "produces": [
+         "text/plain"
+       ],
+       "responses": {
+         "200": {
+           "description": "OK"
+         },
+         "404": {
+           "description": "No ID could be resolved for the given lat/long or postcode"
+         }
+       }
+     }
+   }
   },
   "externalDocs": {
     "description": "Find out more about Swagger",
