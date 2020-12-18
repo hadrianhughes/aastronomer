@@ -31,7 +31,7 @@ export class AAStronomerLambdaLibrary extends cdk.Construct {
     this.functions.getID = this.makeFunction(
       'GetID',
       'get_id',
-      [this.layers.common]
+      [this.layers.common, this.layers.geo]
     )
   }
 
