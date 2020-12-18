@@ -19,7 +19,11 @@ export class AAStronomerAPI extends cdk.Construct {
 
     // Make integrations for lambdas
     const getVisibleByIDIntegration = new LambdaProxyIntegration({
-      handler: props.lambdaLibrary.functions.getVisibleByID!
+      handler: props.lambdaLibrary.functions.getVisibleByID
+    })
+
+    const getIDIntegration = new LambdaProxyIntegration({
+      handler: props.lambdaLibrary.functions.getID
     })
 
     // Create API
@@ -32,6 +36,12 @@ export class AAStronomerAPI extends cdk.Construct {
       path: '/visible/{locationID}',
       methods: [apig.HttpMethod.GET],
       integration: getVisibleByIDIntegration
+    })
+
+    this.api.addRoutes({
+      path: '/id/{locationID}',
+      methods: [apig.HttpMethod.GET],
+      integration: getIDIntegration
     })
   }
 }

@@ -4,7 +4,7 @@ from geo import lat_long_from_id
 
 def handler(event: dict, context: dict) -> dict:
     path_params = event['pathParameters']
-    id_param = path_params['id']
+    id_param = path_params['locationID']
 
     if not valid_id(id_param):
         return {'statusCode': 404, 'body': id_param + ' is not a valid ID'}

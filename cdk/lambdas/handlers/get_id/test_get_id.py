@@ -4,7 +4,7 @@ from .index import handler
 def test_success():
     request = {
         'pathParameters': {
-            'id': '35-356-5-6'
+            'locationID': '35-356-5-6'
         }
     }
 
@@ -17,7 +17,7 @@ def test_success():
 def test_bad_format():
     request = {
         'pathParameters': {
-            'id': '10-20-30'
+            'locationID': '10-20-30'
         }
     }
 
@@ -29,7 +29,7 @@ def test_bad_format():
 def test_bad_x_zone():
     request = {
         'pathParameters': {
-            'id': '0-0-15-0'
+            'locationID': '0-0-15-0'
         }
     }
 
@@ -41,7 +41,7 @@ def test_bad_x_zone():
 def test_bad_y_zone():
     request = {
         'pathParameters': {
-            'id': '0-0-0-15'
+            'locationID': '0-0-0-15'
         }
     }
 
