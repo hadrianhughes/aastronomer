@@ -32,12 +32,12 @@ def handler(event: dict, context: dict) -> dict:
         return make_response(400, location_id + ' is not a valid location ID.')
 
     lat_long = lat_long_from_id(location_id)
-    date_time = time or datetime.now(tz=None).isoformat()
 
     if lat_long is None:
         return make_response(400, 'The specified zone is out of bounds.')
 
     (lat, long) = lat_long
+    date_time = time or datetime.now(tz=None).isoformat()
 
     return make_response(200, {
         'location_id': location_id,
